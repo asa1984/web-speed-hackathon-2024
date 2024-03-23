@@ -1,4 +1,5 @@
 // import { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 // import { Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, TextureLoader, WebGLRenderer } from 'three';
 //
@@ -16,7 +17,7 @@ const _Image = styled.img`
 
 export const HeroImage: React.FC = () => (
   <_Wrapper>
-    <_Image src="/assets/top.jpg" alt="Cyber TOON" />
+    <_Image alt="Cyber TOON" loading="eager" src="/assets/top.jpg" />
   </_Wrapper>
 );
 
