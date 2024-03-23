@@ -12,6 +12,12 @@ export const DATABASE_SEED_PATH = path.resolve(PACKAGE_DIR, './seeds/database.sq
 
 export const IMAGES_PATH = path.resolve(PACKAGE_DIR, './dist/images');
 
-export const CLIENT_STATIC_PATH = path.resolve(WORKSPACE_DIR, './workspaces/client/dist');
+// export const CLIENT_STATIC_PATH = path.resolve(WORKSPACE_DIR, './workspaces/client/dist');
 
-export const INDEX_HTML_PATH = path.resolve(PACKAGE_DIR, './index.html');
+// export const INDEX_HTML_PATH = path.resolve(PACKAGE_DIR, './index.html');
+
+export const CLIENT_STATIC_PATH = path.resolve(WORKSPACE_DIR, './workspaces/vite/dist');
+
+export const ADMIN_APP_INDEX_HTML_PATH = path.resolve(WORKSPACE_DIR, './workspaces/vite/dist/admin.html');
+
+export const CLIENT_APP_INDEX_HTML_PATH = path.resolve(WORKSPACE_DIR, './workspaces/vite/dist/index.html');
