@@ -1,20 +1,17 @@
 import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import React, { lazy, Suspense, useId } from 'react';
 import styled from 'styled-components';
-
-import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
-import { Color, Space, Typography } from '../styles/variables';
-
 import { Box } from './Box';
 import { Button } from './Button';
 import { Flex } from './Flex';
-import { Spacer } from './Spacer';
-import { Text } from './Text';
+import { DialogContentAtom } from '../atoms/DialogContentAtom';
+import { Color, Space } from '../styles/variables';
+
+const Company = lazy(() => import('./Footer/Company'));
+const Contact = lazy(() => import('./Footer/Contact'));
+const Overview = lazy(() => import('./Footer/Overview'));
+const Question = lazy(() => import('./Footer/Question'));
+const Term = lazy(() => import('./Footer/Term'));
 
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
@@ -42,13 +39,9 @@ export const Footer: React.FC = () => {
   const handleRequestToTermDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={termDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={termDialogA11yId} typography={Typography.NORMAL16}>
-          利用規約
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
+        <Suspense>
+          <Term id={termDialogA11yId} />
+        </Suspense>
       </_Content>,
     );
   };
@@ -56,13 +49,9 @@ export const Footer: React.FC = () => {
   const handleRequestToContactDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={contactDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={contactDialogA11yId} typography={Typography.NORMAL16}>
-          お問い合わせ
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
-        </Text>
+        <Suspense>
+          <Contact id={contactDialogA11yId} />
+        </Suspense>
       </_Content>,
     );
   };
@@ -70,13 +59,9 @@ export const Footer: React.FC = () => {
   const handleRequestToQuestionDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={questionDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={questionDialogA11yId} typography={Typography.NORMAL16}>
-          Q&A
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {QUESTION}
-        </Text>
+        <Suspense>
+          <Question id={questionDialogA11yId} />
+        </Suspense>
       </_Content>,
     );
   };
@@ -84,13 +69,9 @@ export const Footer: React.FC = () => {
   const handleRequestToCompanyDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={companyDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={companyDialogA11yId} typography={Typography.NORMAL16}>
-          運営会社
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {COMPANY}
-        </Text>
+        <Suspense>
+          <Company id={companyDialogA11yId} />
+        </Suspense>
       </_Content>,
     );
   };
@@ -98,13 +79,9 @@ export const Footer: React.FC = () => {
   const handleRequestToOverviewDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={overviewDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={overviewDialogA11yId} typography={Typography.NORMAL16}>
-          Cyber TOONとは
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {OVERVIEW}
-        </Text>
+        <Suspense>
+          <Overview id={overviewDialogA11yId} />
+        </Suspense>
       </_Content>,
     );
   };
