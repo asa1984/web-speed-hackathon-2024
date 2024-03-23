@@ -31,5 +31,8 @@ export default defineConfig({
     baseURL: BASE_URL,
     headless: false,
     trace: 'off',
+    launchOptions: {
+      executablePath: process.env.PLAYWRIGHT_BROWSER_PATH,
+    },
   },
 });
