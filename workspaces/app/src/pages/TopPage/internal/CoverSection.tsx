@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import {Search}from'@mui/icons-material
+import { Search } from '@mui/icons-material';
 import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
