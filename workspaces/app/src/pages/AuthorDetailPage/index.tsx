@@ -31,6 +31,25 @@ const _AuthorImageWrapper = styled.div`
   }
 `;
 
+const BookList: React.FC<{ authorId: string }> = ({ authorId }) => {
+  const { data: author } = useAuthor({ params: { authorId } });
+  return (
+    <>
+      {author.books.map((book) => (
+        <BookListItem key={book.id} book={book} />
+      ))}
+      {author.books.length === 0 && (
+        <>
+          <Spacer height={Space * 2} />
+          <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
+            この作者の作品はありません
+          </Text>
+        </>
+      )}
+    </>
+  );
+};
+
 const AuthorDetailPage: React.FC = () => {
   const { authorId } = useParams<RouteParams<'/authors/:authorId'>>();
   invariant(authorId);
@@ -69,17 +88,9 @@ const AuthorDetailPage: React.FC = () => {
         <Spacer height={Space * 2} />
 
         <Flex align="center" as="ul" direction="column" justify="center">
-          {author.books.map((book) => (
-            <BookListItem key={book.id} bookId={book.id} />
-          ))}
-          {author.books.length === 0 && (
-            <>
-              <Spacer height={Space * 2} />
-              <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
-                この作者の作品はありません
-              </Text>
-            </>
-          )}
+          <Suspense>
+            <BookList authorId={authorId} />
+          </Suspense>
         </Flex>
       </Box>
     </Box>
