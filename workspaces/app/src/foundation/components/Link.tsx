@@ -1,14 +1,14 @@
-import React from 'react';
 import { Link as ReactRouterLink, type LinkProps } from 'react-router-dom';
 
 type Props = {
   children: React.ReactNode;
-  href: string;
+  href?: string;
+  to?: string;
 } & LinkProps;
 
-export const Link: React.FC<Props> = ({ children, href, ...rest }) => {
+export const Link: React.FC<Props> = ({ children, href, to, ...rest }) => {
   return (
-    <ReactRouterLink to={href} {...rest}>
+    <ReactRouterLink to={to ?? href} {...rest}>
       {children}
     </ReactRouterLink>
   );
