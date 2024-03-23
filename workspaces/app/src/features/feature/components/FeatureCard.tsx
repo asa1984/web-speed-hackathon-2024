@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { styled } from 'styled-components';
 
 import { Flex } from '../../../foundation/components/Flex';
@@ -7,7 +6,6 @@ import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
-import { useBook } from '../../book/hooks/useBook';
 
 const _Wrapper = styled(Link)`
   display: grid;
@@ -44,23 +42,37 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  book: {
+    id: string;
+    name: string;
+    description: string;
+    author: {
+      id: string;
+      name: string;
+      description: string;
+      image: {
+        id: string;
+        alt: string;
+      };
+    };
+    image: {
+      id: string;
+      alt: string;
+    };
+  };
 };
 
-const FeatureCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
-
+export const FeatureCard: React.FC<Props> = ({ book }) => {
   const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
 
   return (
-    <_Wrapper href={`/books/${bookId}`}>
+    <_Wrapper href={`/books/${book.id}`}>
       {imageUrl != null && (
         <_ImgWrapper>
           <Image alt={book.image.alt} height={96} objectFit="cover" src={imageUrl} width={96} />
         </_ImgWrapper>
       )}
-
       <_ContentWrapper>
         <Text color={Color.MONO_100} typography={Typography.NORMAL16} weight="bold">
           {book.name}
@@ -83,13 +95,3 @@ const FeatureCard: React.FC<Props> = ({ bookId }) => {
     </_Wrapper>
   );
 };
-
-const FeatureCardWithSuspense: React.FC<Props> = (props) => {
-  return (
-    <Suspense fallback={null}>
-      <FeatureCard {...props} />
-    </Suspense>
-  );
-};
-
-export { FeatureCardWithSuspense as FeatureCard };

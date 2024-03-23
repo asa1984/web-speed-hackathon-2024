@@ -32,18 +32,33 @@ const _AvatarWrapper = styled.div`
   }
 `;
 
-type Props = {
-  bookId: string;
+type BookCardPresenterProps = {
+  book: {
+    id: string;
+    name: string;
+    description: string;
+    author: {
+      id: string;
+      name: string;
+      description: string;
+      image: {
+        id: string;
+        alt: string;
+      };
+    };
+    image: {
+      id: string;
+      alt: string;
+    };
+  };
 };
 
-const BookCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
-
+const BookCardPresenter: React.FC<BookCardPresenterProps> = ({ book }) => {
   const imageUrl = useImage({ height: 128, imageId: book.image.id, width: 192 });
   const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
 
   return (
-    <_Wrapper href={`/books/${bookId}`}>
+    <_Wrapper href={`/books/${book.id}`}>
       {imageUrl != null && (
         <_ImgWrapper>
           <Image alt={book.image.alt} height={128} objectFit="cover" src={imageUrl} width={192} />
@@ -70,7 +85,17 @@ const BookCard: React.FC<Props> = ({ bookId }) => {
   );
 };
 
-const BookCardWithSuspense: React.FC<Props> = (props) => {
+type BookCardProps = {
+  bookId: string;
+};
+
+const BookCard: React.FC<BookCardProps> = ({ bookId }) => {
+  const { data: book } = useBook({ params: { bookId } });
+
+  return <BookCardPresenter book={book} />;
+};
+
+const BookCardWithSuspense: React.FC<BookCardProps> = (props) => {
   return (
     <Suspense fallback={null}>
       <BookCard {...props} />
@@ -78,4 +103,4 @@ const BookCardWithSuspense: React.FC<Props> = (props) => {
   );
 };
 
-export { BookCardWithSuspense as BookCard };
+export { BookCardWithSuspense as BookCard, BookCardPresenter };
