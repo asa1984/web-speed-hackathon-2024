@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
@@ -23,22 +22,14 @@
       });
 
       devShells = forEachSystem (system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
+        let pkgs = nixpkgs.legacyPackages.${system};
         in {
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [{
-              env.PLAYWRIGHT_BROWSER_PATH =
-                "${pkgs-unstable.playwright-driver.browsers}/chromium-1091/chrome-linux/chrome";
               packages =
                 [ inputs.asa1984-nvim.packages.${system}.neovim-minimal ]
-                ++ (with pkgs; [
-                  flyctl
-                  nixfmt
-                  nodePackages.typescript-language-server
-                ]);
+                ++ (with pkgs; [ nixfmt ]);
               languages.javascript = {
                 enable = true;
                 corepack.enable = true;
