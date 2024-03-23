@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
@@ -14,7 +15,7 @@
     extra-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = { self, nixpkgs, devenv, systems, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, devenv, systems, ... }@inputs:
     let forEachSystem = nixpkgs.lib.genAttrs (import systems);
     in {
       packages = forEachSystem (system: {
@@ -22,14 +23,20 @@
       });
 
       devShells = forEachSystem (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
         in {
           default = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [{
-              packages =
-                [ inputs.asa1984-nvim.packages.${system}.neovim-minimal ]
-                ++ (with pkgs; [ nixfmt ]);
+              packages = [
+                inputs.asa1984-nvim.packages.${system}.neovim-minimal
+
+              ] ++ (with pkgs-unstable; [
+                nixfmt
+                nodePackages.typescript-language-server
+              ]);
               languages.javascript = {
                 enable = true;
                 corepack.enable = true;
