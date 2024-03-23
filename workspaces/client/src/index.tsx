@@ -1,6 +1,6 @@
 // import './side-effects';
 
-import ReactDOM from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { SWRConfig } from 'swr';
 
@@ -14,11 +14,13 @@ const main = async () => {
   await registerServiceWorker();
   // await preloadImages();
 
+  const root = document.getElementById('root')!;
+
   if (window.location.pathname.startsWith('/admin')) {
-    ReactDOM.createRoot($('#root').get(0)!).render(<AdminApp />);
+    createRoot(root).render(<AdminApp />);
   } else {
-    ReactDOM.hydrateRoot(
-      $('#root').get(0)!,
+    hydrateRoot(
+      document.getElementById('root')!,
       <SWRConfig value={{ revalidateIfStale: true, revalidateOnFocus: false, revalidateOnReconnect: false }}>
         <BrowserRouter>
           <ClientApp />
