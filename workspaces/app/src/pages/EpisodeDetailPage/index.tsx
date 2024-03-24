@@ -12,35 +12,27 @@ import { Space } from '../../foundation/styles/variables';
 
 import { ComicViewer } from './internal/ComicViewer';
 
-const EpisodeList: React.FC<{ bookId: string }> = ({ bookId }) => {
-  const { data: episodeList } = useEpisodeList({ query: { bookId } });
-  return (
-    <>
-      {episodeList.map((episode) => (
-        <EpisodeListItem key={episode.id} episode={episode} />
-      ))}
-    </>
-  );
-};
-
 const EpisodeDetailPage: React.FC = () => {
   const { bookId, episodeId } = useParams<RouteParams<'/books/:bookId/episodes/:episodeId'>>();
   invariant(bookId);
   invariant(episodeId);
 
+  const { data: episodeList } = useEpisodeList({ query: { bookId } });
+  const viewingEpisode = episodeList.find((episode) => episode.id === episodeId)!;
+
   return (
     <Box>
       <section aria-label="漫画ビューアー">
-        <ComicViewer episodeId={episodeId} />
+        <ComicViewer episode={viewingEpisode} />
       </section>
 
       <Separator />
 
       <Box aria-label="エピソード一覧" as="section" px={Space * 2}>
         <Flex align="center" as="ul" direction="column" justify="center">
-          <Suspense>
-            <EpisodeList bookId={bookId} />
-          </Suspense>
+          {episodeList.map((episode) => (
+            <EpisodeListItem key={episode.id} episode={episode} />
+          ))}
         </Flex>
       </Box>
     </Box>
