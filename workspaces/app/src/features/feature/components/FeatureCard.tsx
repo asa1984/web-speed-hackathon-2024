@@ -6,6 +6,7 @@ import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
+import { FeatureList } from '../hooks/useFeatureList';
 
 const _Wrapper = styled(Link)`
   display: grid;
@@ -42,24 +43,7 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  book: {
-    id: string;
-    name: string;
-    description: string;
-    author: {
-      id: string;
-      name: string;
-      description: string;
-      image: {
-        id: string;
-        alt: string;
-      };
-    };
-    image: {
-      id: string;
-      alt: string;
-    };
-  };
+  book: FeatureList[number]['book'];
 };
 
 export const FeatureCard: React.FC<Props> = ({ book }) => {
