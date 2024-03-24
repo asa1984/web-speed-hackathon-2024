@@ -33,7 +33,7 @@ app.get('/healthz', (c) => {
 app.route('/', staticApp);
 app.route('/', imageApp);
 app.route('/', apiApp);
-app.route('/', adminApp);
+// app.route('/', adminApp);
 app.route('/', ssrApp);
 
 app.onError((cause) => {
