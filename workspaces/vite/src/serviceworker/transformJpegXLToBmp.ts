@@ -12,12 +12,12 @@ export async function transformJpegXLToBmp(response: Response): Promise<Response
   });
 
   const imageData = decode(await response.arrayBuffer())!;
-  const bmpBinary = await new Jimp(imageData).getBufferAsync(Jimp.MIME_BMP);
+  const pngBinary = await new Jimp(imageData).getBufferAsync(Jimp.MIME_PNG);
 
-  return new Response(bmpBinary, {
+  return new Response(pngBinary, {
     headers: {
       'Cache-Control': 'no-store',
-      'Content-Type': 'image/bmp',
+      'Content-Type': 'image/png',
     },
   });
 }
