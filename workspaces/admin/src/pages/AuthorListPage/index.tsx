@@ -19,9 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useId, useMemo, useState } from 'react';
-import _ from 'underscore';
 import { create } from 'zustand';
 
+import { type Author } from '../../features/authors/hooks/useAuthor';
 import { useAuthorList } from '../../features/authors/hooks/useAuthorList';
 import { isContains } from '../../lib/filter/isContains';
 
@@ -48,7 +48,7 @@ type AuthorModalState =
     }
   | {
       mode: typeof AuthorModalMode.Detail;
-      params: { authorId: string };
+      params: { author: Author };
     }
   | {
       mode: typeof AuthorModalMode.Create;
@@ -58,7 +58,7 @@ type AuthorModalState =
 type AuthorModalAction = {
   close: () => void;
   openCreate: () => void;
-  openDetail: (authorId: string) => void;
+  openDetail: (author: Author) => void;
 };
 
 export const AuthorListPage: React.FC = () => {
@@ -107,8 +107,8 @@ export const AuthorListPage: React.FC = () => {
         openCreate() {
           set({ mode: AuthorModalMode.Create, params: {} });
         },
-        openDetail(authorId) {
-          set({ mode: AuthorModalMode.Detail, params: { authorId } });
+        openDetail(author) {
+          set({ mode: AuthorModalMode.Detail, params: { author } });
         },
       },
     }));
@@ -184,10 +184,10 @@ export const AuthorListPage: React.FC = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {_.map(filteredAuthorList, (author) => (
+                {filteredAuthorList.map((author) => (
                   <Tr key={author.id}>
                     <Td textAlign="center" verticalAlign="middle">
-                      <Button colorScheme="teal" onClick={() => modalState.openDetail(author.id)} variant="solid">
+                      <Button colorScheme="teal" onClick={() => modalState.openDetail(author)} variant="solid">
                         詳細
                       </Button>
                     </Td>
@@ -206,7 +206,7 @@ export const AuthorListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === AuthorModalMode.Detail ? (
-        <AuthorDetailModal isOpen authorId={modalState.params.authorId} onClose={() => modalState.close()} />
+        <AuthorDetailModal isOpen author={modalState.params.author} onClose={() => modalState.close()} />
       ) : null}
       {modalState.mode === AuthorModalMode.Create ? (
         <CreateAuthorModal isOpen onClose={() => modalState.close()} />
