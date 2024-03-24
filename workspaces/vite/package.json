@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm run build:clean && pnpm run build:vite && pnpm run build:tsup",
     "build:clean": "rm -rf ./dist",
+    "build:dev": "ANALYZE=true pnpm run build",
     "build:tsup": "tsup",
     "build:vite": "vite build"
   },
@@ -47,6 +48,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "node-stdlib-browser": "1.2.0",
     "pkg-dir": "5.0.0",
+    "rollup-plugin-visualizer": "5.12.0",
     "tsup": "8.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
