@@ -18,5 +18,10 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [react(), nodePolyfills()],
+  plugins: [
+    react(),
+    nodePolyfills({
+      exclude: ['fs'],
+    }),
+  ],
 });

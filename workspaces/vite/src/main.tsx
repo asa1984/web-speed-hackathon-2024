@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { SWRConfig } from 'swr';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { ClientApp } from '@wsh-2024/app/src/index';
+// import { ClientApp as Client } from '@wsh-2024/app/src/index';
+// import { AdminApp as Admin } from '@wsh-2024/admin/src/index';
+const Client = React.lazy(() => import('./Client'));
+const Admin = React.lazy(() => import('./Admin'));
 
 import { registerServiceWorker } from './utils/registerServiceWorker';
 
@@ -14,11 +16,14 @@ const main = async () => {
 
   root.render(
     <React.StrictMode>
-      <SWRConfig value={{ revalidateIfStale: true, revalidateOnFocus: false, revalidateOnReconnect: false }}>
-        <BrowserRouter>
-          <ClientApp />
-        </BrowserRouter>
-      </SWRConfig>
+      <BrowserRouter>
+        <React.Suspense>
+          <Routes>
+            <Route element={<Client />} path="/" />
+            <Route element={<Admin />} path="/admin" />
+          </Routes>
+        </React.Suspense>
+      </BrowserRouter>
     </React.StrictMode>,
   );
 };
