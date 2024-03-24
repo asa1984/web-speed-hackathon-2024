@@ -214,3 +214,5 @@ export const AuthorListPage: React.FC = () => {
     </>
   );
 };
+
+export { AuthorListPage as default };

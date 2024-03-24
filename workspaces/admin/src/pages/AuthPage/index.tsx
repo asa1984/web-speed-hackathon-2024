@@ -14,3 +14,5 @@ export const AuthPage: React.FC = () => {
     </Flex>
   );
 };
+
+export { AuthPage as default };

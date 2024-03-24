@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Link, Outlet } from '@tanstack/react-router';
+import { Suspense } from 'react';
 
 export const CommonLayout: React.FC = () => {
   return (
@@ -22,7 +23,9 @@ export const CommonLayout: React.FC = () => {
       </Box>
       <Box flexGrow={1} flexShrink={1} overflowY="auto" p={4}>
         <Box height="100%" marginX="auto" maxWidth="100ch" width="100%">
-          <Outlet />
+          <Suspense>
+            <Outlet />
+          </Suspense>
         </Box>
       </Box>
     </Flex>
