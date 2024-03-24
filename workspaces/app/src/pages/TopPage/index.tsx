@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import styled from 'styled-components';
 
 import { FeatureList } from '../../features/feature/components/FeatureList';
 import { RankingList } from '../../features/ranking/components/RankingList';
@@ -8,6 +9,8 @@ import { Flex } from '../../foundation/components/Flex';
 import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
+import { Container } from '../../foundation/components/Container';
+import { Footer } from '../../foundation/components/Footer';
 
 import { CoverSection } from './internal/CoverSection';
 
@@ -60,4 +63,20 @@ const TopPage: React.FC = () => {
   );
 };
 
-export { TopPage as default };
+const _LayoutContent = styled.div`
+  height: 100%;
+  padding: 0 ${Space * 2}px;
+`;
+
+const TopPageWithCommonLayout: React.FC = () => {
+  return (
+    <Container>
+      <_LayoutContent>
+        <TopPage />
+      </_LayoutContent>
+      <Footer />
+    </Container>
+  );
+};
+
+export { TopPageWithCommonLayout as default };

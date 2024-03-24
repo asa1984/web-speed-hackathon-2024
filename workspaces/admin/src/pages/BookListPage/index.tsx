@@ -18,10 +18,10 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId, useMemo, useState } from 'react';
-import _ from 'underscore';
+import { Suspense, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
+import { type Book } from '../../features/books/hooks/useBook';
 import { useBookList } from '../../features/books/hooks/useBookList';
 import { isContains } from '../../lib/filter/isContains';
 
@@ -50,7 +50,7 @@ type BookModalState =
     }
   | {
       mode: typeof BookModalMode.Detail;
-      params: { bookId: string };
+      params: { book: Book };
     }
   | {
       mode: typeof BookModalMode.Create;
@@ -60,7 +60,7 @@ type BookModalState =
 type BookModalAction = {
   close: () => void;
   openCreate: () => void;
-  openDetail: (bookId: string) => void;
+  openDetail: (book: Book) => void;
 };
 
 export const BookListPage: React.FC = () => {
@@ -120,8 +120,8 @@ export const BookListPage: React.FC = () => {
         openCreate() {
           set({ mode: BookModalMode.Create, params: {} });
         },
-        openDetail(bookId) {
-          set({ mode: BookModalMode.Detail, params: { bookId } });
+        openDetail(book) {
+          set({ mode: BookModalMode.Detail, params: { book } });
         },
       },
     }));
@@ -216,10 +216,10 @@ export const BookListPage: React.FC = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {_.map(filteredBookList, (book) => (
+                {filteredBookList.map((book) => (
                   <Tr key={book.id}>
                     <Td textAlign="center" verticalAlign="middle">
-                      <Button colorScheme="teal" onClick={() => modalState.openDetail(book.id)} variant="solid">
+                      <Button colorScheme="teal" onClick={() => modalState.openDetail(book)} variant="solid">
                         詳細
                       </Button>
                     </Td>
@@ -244,7 +244,9 @@ export const BookListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === BookModalMode.Detail ? (
-        <BookDetailModal isOpen bookId={modalState.params.bookId} onClose={() => modalState.close()} />
+        <Suspense>
+          <BookDetailModal isOpen book={modalState.params.book} onClose={() => modalState.close()} />
+        </Suspense>
       ) : null}
       {modalState.mode === BookModalMode.Create ? <CreateBookModal isOpen onClose={() => modalState.close()} /> : null}
     </>

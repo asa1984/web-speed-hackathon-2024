@@ -16,24 +16,23 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { Link } from '@tanstack/react-router';
 import { useToggle } from '@uidotdev/usehooks';
+import { Link } from 'react-router-dom';
 
-import { useBook } from '../../../../features/books/hooks/useBook';
+import { type Book } from '../../../../features/books/hooks/useBook';
 import { useEpisodeList } from '../../../../features/episodes/hooks/useEpisodeList';
 
 import { BookDetailContent } from './BookDetailContent';
 import { BookEditContent } from './BookEditContent';
 
 type Props = {
-  bookId: string;
+  book: Book;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) => {
-  const { data: episodeList } = useEpisodeList({ bookId });
-  const { data: book } = useBook({ bookId });
+export const BookDetailModal: React.FC<Props> = ({ book, isOpen, onClose }) => {
+  const { data: episodeList } = useEpisodeList({ bookId: book.id });
 
   const [isEdit, toggleIEdit] = useToggle(false);
 
@@ -43,14 +42,10 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
       <ModalContent containerProps={{ p: 8 }} height="100%" m={0} overflowY="auto">
         <ModalCloseButton />
         <Stack height="100%" p={4}>
-          {book != null && (
-            <>
-              {isEdit ? (
-                <BookEditContent book={book} onEditComplete={() => toggleIEdit()} />
-              ) : (
-                <BookDetailContent book={book} onCloseDialog={onClose} onEdit={() => toggleIEdit()} />
-              )}
-            </>
+          {isEdit ? (
+            <BookEditContent book={book} onEditComplete={() => toggleIEdit()} />
+          ) : (
+            <BookDetailContent book={book} onCloseDialog={onClose} onEdit={() => toggleIEdit()} />
           )}
 
           <Divider />
@@ -75,7 +70,7 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
                                 as={Link}
                                 colorScheme="teal"
                                 role="button"
-                                to={`/admin/books/${bookId}/episodes/${episode.id}`}
+                                to={`/admin/books/${book.id}/episodes/${episode.id}`}
                                 variant="solid"
                               >
                                 編集
@@ -107,7 +102,7 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
               colorScheme="teal"
               mt={4}
               role="button"
-              to={`/admin/books/${bookId}/episodes/new`}
+              to={`/admin/books/${book.id}/episodes/new`}
               variant="solid"
             >
               エピソードを追加

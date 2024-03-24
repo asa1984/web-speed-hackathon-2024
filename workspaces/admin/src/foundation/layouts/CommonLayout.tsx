@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { Link, Outlet } from '@tanstack/react-router';
 import { Suspense } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 export const CommonLayout: React.FC = () => {
   return (

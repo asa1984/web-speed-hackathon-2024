@@ -1,13 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // import { ClientApp as Client } from '@wsh-2024/app/src/index';
 // import { AdminApp as Admin } from '@wsh-2024/admin/src/index';
-const Client = React.lazy(() => import('./Client'));
-const Admin = React.lazy(() => import('./Admin'));
+// const Client = React.lazy(() => import('./Client'));
+// const Admin = React.lazy(() => import('./Admin'));
+import { adminRouter } from '@wsh-2024/admin/src/root';
+import { clientRouter } from '@wsh-2024/app/src/root';
 
 import { registerServiceWorker } from './utils/registerServiceWorker';
+
+const router = createBrowserRouter([...clientRouter, ...adminRouter]);
 
 const main = async () => {
   await registerServiceWorker();
@@ -16,14 +20,7 @@ const main = async () => {
 
   root.render(
     <React.StrictMode>
-      <BrowserRouter>
-        <React.Suspense>
-          <Routes>
-            <Route element={<Client />} path="/" />
-            <Route element={<Admin />} path="/admin" />
-          </Routes>
-        </React.Suspense>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </React.StrictMode>,
   );
 };

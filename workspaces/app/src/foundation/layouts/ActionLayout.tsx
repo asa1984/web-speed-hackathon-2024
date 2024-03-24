@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -28,7 +29,9 @@ export const ActionLayout: React.FC<Props> = ({ leftContent, rightContent }) => 
       </_Header>
 
       <Box as="main" height="100%" py={Space * 2}>
-        <Outlet />
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
       </Box>
 
       <Footer />
